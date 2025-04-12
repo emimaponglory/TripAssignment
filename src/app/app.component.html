@@ -1,0 +1,57 @@
+<h1 class="heading">Trip History</h1>
+<div class="page-flex">
+  <form #form="ngForm" (ngSubmit)="submitForm(form)">
+    <p>
+      <label for="startPoint">Starting Point</label>
+      <input
+        type="text"
+        name="startPoint"
+        id="startPoint"
+        placeholder="Starting Point"
+        required
+        ngModel
+        pattern="^[A-Za-z]+$"
+      />
+    </p>
+    <p>
+      <label for="endPoint">Ending Point</label>
+      <input
+        type="text"
+        name="endPoint"
+        id="endPoint"
+        ngModel
+        placeholder="Ending Point"
+        required
+        pattern="^[A-Za-z]+$"
+      />
+    </p>
+    <p class="warning">Enter only alphabets without space</p>
+    <button type="submit" [disabled]="form.invalid">Submit</button>
+  </form>
+  <div>
+    <h2>Entered Trips List</h2>
+    <ul>
+      <li *ngFor="let trip of tripList">
+        {{ trip.startPoint }}{{ " - " }} {{ trip.endPoint }}
+      </li>
+    </ul>
+  </div>
+</div>
+<div
+  [ngStyle]="{
+    'grid-template-columns': 'repeat(' + visualTrips.length + ', max-content)'
+  }"
+  class="trip-grid"
+>
+  <div
+    *ngFor="let trip of visualTrips; let i = index"
+    class="node-line-box"
+    [ngStyle]="{ 'grid-column': i + 1, 'grid-row': trip.level ? '1' : '2' }"
+  >
+    <div class="node-name-box">
+      <div class="node"></div>
+      <div>{{ trip.tripName | uppercase }}</div>
+    </div>
+    <div *ngIf="trip.type !== 'no-line'" [ngClass]="trip.type"></div>
+  </div>
+</div>
